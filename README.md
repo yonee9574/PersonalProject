@@ -7,7 +7,7 @@
 1. DB 없이 LocalStorage만 이용하여 게시판을 구현한다.
 2.  Create ( 쓰기 ) Read ( 읽기 ) Update ( 수정 ) Delete ( 삭제 )를 구현한다.
 
-### 게시판 분석
+### 게시판 분석.
 
 
 
