@@ -1,0 +1,135 @@
+<!-- 글쓰기 페이지 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>오늘의 감사한 점</title>
+<style>
+    th,td {
+        border: dotted;
+        font-size: 1rem;
+    }
+    
+    table {
+        border: 1px;
+        border-collapse: collapse;
+        width: 50%;
+        height: 50px;
+        margin: auto;
+        text-align: center;
+    }
+    
+    h1{
+        text-align: center;
+        font-size: 3rem;
+    }
+      
+    textarea{
+        border: 1;
+        width: 80%; 
+        border: 1; 
+        overflow:visible; 
+        text-overflow:ellipsis;
+    }
+
+    input{
+        border: 1;
+    }
+      
+    .btn{
+        border: 1;
+        border-radius: 20%;
+        color: rgb(187, 187, 187);
+        padding: 8px 45px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 15px;
+        margin: auto;
+        cursor: pointer;
+    }
+    #login_wrapper{
+        position: absolute;
+        top: 75%;
+        left: 45%;
+        margin:auto;
+    }
+</style>
+</head>
+
+<body>
+    <h1>글 쓰 기</h1>
+        <table>
+        <tr>
+            <th>감사한 점</th>
+            <td><input size = "100%" type="text" id="title" name="title"/></td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td><input size = "100%" type="text" id="writer" name="writer"/></td>
+        </tr>
+        <tr>
+            <th>글내용</th>
+        <td>
+        <textarea style="width:84%; border:1; overflow:visible; text-overflow:ellipsis;" rows=30 type="text" id="content" name="content"></textarea>
+        </td>
+    </tr>
+  </table>
+ 
+  <div id="login_wrapper">
+    <button class = "btn" onclick="save()">저장</button>
+    <button class = "btn" onclick="window.history.back()">취소</button>
+  </div>
+</body>
+<script>
+    function valid(){
+        var titleEl=document.getElementById('title');
+        var writerEl=document.getElementById('writer');
+        var contentEl=document.getElementById('content');
+        if(!titleEl.value){
+            alert("감사한점을 입력하세요.")
+          return false;
+         }
+         else if(!writerEl.value){
+            alert("작성자를 입력하세요.")
+          return false;
+         }
+         else if(!contentEl.value){
+            alert("내용을 입력하세요.")
+          return false;
+         }
+        return true;
+    }
+
+    function save() {
+        if (!confirm('저장하시겠습니까?')) {
+            return;
+        }
+        if(!valid()){
+            return;
+        }
+        var contents;
+        
+        try {
+            contents = JSON.parse(localStorage.getItem("contents"));
+        } catch (e) {
+            contents = null;
+        }
+        
+        if (!contents) {
+            contents = [];
+        }
+        var title = document.getElementById('title').value;
+        var writer = document.getElementById('writer').value;
+        var content = document.getElementById('content').value;
+        contents.push({no:contents.length+1
+            , title:title
+            , writer:writer
+            , content:content
+            , write_date:new Date()});
+        
+        localStorage.setItem("contents", JSON.stringify(contents));
+        alert('저장되었습니다.');
+        location.href = 'main.html';
+        }
+</script>
+</html>

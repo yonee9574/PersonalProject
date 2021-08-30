@@ -1,12 +1,110 @@
+<!-- 게시판 메인페이지 -->
+
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
 <meta charset="UTF-8">
 <title>오늘의 감사 게시판</title>
+<style>
+    * {
+        margin:0; padding:0
+    }
+    
+    body {
+        font-family: '맑은 고딕' 돋움; font-size:0.75em; color:#333
+    }
+    
+    .tbl-ex{
+        margin:100px auto 0px auto;
+    }
+    
+    .tbl-ex, .tbl-ex th , .tbl-ex td{
+        border:1px solid gray;
+        border-width: 1px 0;
+        border-collapse: collapse;
+        text-align: center;
+        padding:15px;
+    }
+    
+    .tbl-ex th{
+        background-color: #999;
+        font-size: 1.5em;
+        color: #fff;
+        border-width:2px 0;
+    }
+    
+    .tbl-ex td{
+        border-style:dotted;
+    }
+    
+    .tbl-ex tr:hover td{
+        background-color: tomato;
+        cursor : pointer;
+    }
+</style>
 </head>
 
 <body>
-<p>안녕하세요</p>
+<table class="tbl-ex">
+    <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+    </tr>
+    <tbody id="rows">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<div>
+    -
+</div>
+<div style="width: 43%;  float:right;" >
+    <button class ="btn" onclick="moveForm()">글작성</button>
+</div>
 </body>
+
+<script>
+    var contentList = JSON.parse(localStorage.getItem("contents"));
+
+    drawRows();
+    function moveForm() {
+        location.href = 'write.html'
+    }
+
+    function drawRows() {
+        var templates = '';
+        var body = document.getElementById('rows');
+
+        for (var i=contentList.length-1; 0<=i; i--) {
+            var content  = contentList[i];
+            console.log(content);
+            templates += '<tr onclick="moveView('+i+')">';
+            templates += '<td style="text-align:center">'+(i+1)+'</td>';
+            templates += '<td style="text-align:center">'+content.writer+'</td>';
+            templates += '<td style="text-align:center">'+content.title+'</td>';
+            templates += '<td style="text-align:center">'+toStringByFormatting(new Date(content.write_date))+'</td>';
+            templates += '</tr>';
+        }
+        body.innerHTML = templates;
+    }
+
+    function moveView(contentNo) {
+        location.href = 'view.html?no='+(contentNo+1);
+    }
+
+    function leftPad(value) {
+        if (value >= 10) { return value; 
+        } return `0${value}`; 
+    } function toStringByFormatting(source, delimiter = '-') { 
+        const year = source.getFullYear(); const month = leftPad(source.getMonth() + 1); 
+        const day = leftPad(source.getDate()); return [year, month, day].join(delimiter); 
+    }
+</script>
 </html>
