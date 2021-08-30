@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>오늘의 감사 게시판</title>
 <style>
+
     * {
         margin:0; padding:0
     }
@@ -41,21 +42,26 @@
         background-color: tomato;
         cursor : pointer;
     }
-    #center_button{
-        position: absolute;
-        top: 75%;
-        left: 45%;
-        margin:auto;
+
+    h1{
+        text-align: center;
+        font-size: 45px;
+        margin-top: 50px;
     }
+
+    body{
+        background-image: url(https://cdn.discordapp.com/attachments/819252884532101253/881931203811356762/-1_1.png);
+    } 
 </style>
 </head>
-
 <body>
-<table class="tbl-ex">
+    <h1>오늘의 감사 게시판</h1>
+    
+    <table class="tbl-ex">
     <tr>
         <th>번호</th>
-        <th>제목</th>
         <th>작성자</th>
+        <th>감사 내용</th>
         <th>작성일</th>
     </tr>
     <tbody id="rows">
@@ -67,13 +73,12 @@
         </tr>
     </tbody>
 </table>
-
-<div>
-    -
-</div>
-<div style="width: 43%;  float:right;" >
-    <button class ="btn" onclick="moveForm()">글작성</button>
-</div>
+    <div>
+        　
+    </div>
+    <div style="width: 35%;  float:right;" >
+        <button class ="btn" onclick="moveForm()">글작성</button>
+    </div>
 </body>
 
 <script>
