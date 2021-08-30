@@ -6,23 +6,25 @@
 <meta charset="UTF-8">
 <title>글내용</title>
 <style>
-
     th,td {
         border:solid 1px;
         font-size: 1.5rem;
-      }
-      table {
+    }
+      
+    table {
         border-collapse: collapse;
         width: 60%;
         height: 50px;
         margin: auto;
         text-align: center;
-      }
-      h1{
+    }
+
+    h1{
         text-align: center;
         font-size: 2.5rem;
-      }
-      .btn{
+    }
+      
+    .btn{
         border: none;
         border-radius: 10%;
         color: black;
@@ -33,7 +35,8 @@
         font-size: 16px;
         margin: 4px 2px;
         cursor: pointer;
-      }
+    }
+    
     a{
         text-decoration: none;
         color: black;
@@ -45,16 +48,20 @@
         resize: none;
     }
 
-    #center_button{
+    .move_button{
         position: absolute;
-        top: 37%;
-        left: 65%;
+        top: 45%;
+        left: 80%;
         margin:auto;
     }
+    
+    body{
+        background-image: url(https://cdn.discordapp.com/attachments/819252884532101253/881931203811356762/-1_1.png);
+    } 
 </style>
 </head>
 <body>
-  <h1>오늘의 감사</h1>
+    <h1>오늘의 감사</h1>
     <table>
         <tr>
             <th>제목</th>
@@ -66,7 +73,7 @@
             <td><p id="writer"></p></td>
         </tr>
         <tr>
-            <th>글내용</th>
+            <th>감사 내용</th>
             <td>
             <pre id="content"></pre>
             </td>
@@ -75,18 +82,15 @@
         <tr>
             <th>작성일</th>
             <td><p id="write_date"></p></td>
-        </tr>
-
-        
+        </tr>  
   </table>
-    
     <div style="width: 100%; text-align: center; margin: auto; border-collapse: collapse;">
         <div id="comments">
         <div id="comment-head" class="comment-row">
         <span id="comments-count"></span>　
     </div>
 
-    <div id="center_button">
+    <div class="move_button">
         <button class = "btn" onclick="removeContent()">삭제</button>
         <button class = "btn" onclick="modify()">수정</button>
         <button class = "btn" onclick="window.history.back()">목록</button>
@@ -95,6 +99,7 @@
     <div>
         <textarea id="new-comment" name = "new_comment" row=5 placeholder="댓글을 입력해 주세요" ></textarea>
         <button type="submit" onclick="submitComment()">전송</button>
+
     </div>
 
     <div class="comment-row">
@@ -103,10 +108,6 @@
             </tbody>
         </table>
     </div>
-
-    </div>
-    </div>
-
 </body>
 <script>
     var contents = JSON.parse(localStorage.getItem("contents"));
@@ -123,18 +124,19 @@
     document.getElementById('writer').innerText = content.writer;
     document.getElementById('content').innerText = content.content;
     document.getElementById('write_date').innerText = content.write_date;
-  }
+    }
 
-  function removeContent() {
-    if (confirm('삭제하시겠습니까?')){
-        location.href = 'main.html';
-      } else {
-        return;
-      }
-    console.log(contents);
-    contents.splice(getParameterByName('no')-1, getParameterByName('no'));
-    localStorage.setItem("contents", JSON.stringify(contents));
-  }
+    function removeContent() {
+        if (confirm('삭제하시겠습니까?')){
+            location.href = 'main.html';
+        } else {
+            return;
+        }
+        console.log(contents);
+        contents.splice(getParameterByName('no')-1, getParameterByName('no'));
+        localStorage.setItem("contents", JSON.stringify(contents));
+    }
+
     function modify() {
         if (confirm('수정하시겠습니까?')){
             location.href = 'modify.html?no='+getParameterByName('no');
@@ -142,6 +144,7 @@
             return;
         }
     }
+
     function getParameterByName(name) { 
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"); 
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search); 
@@ -188,7 +191,8 @@
 
    localStorage.setItem('comments', JSON.stringify(comment));
    drawRows(list);
-}
+    }
+
     function drawRows(list) {
         var templates = '';
         var body = document.getElementById('comments-rows');
@@ -204,28 +208,29 @@
             body.innerHTML = templates;
         }
 
-        function toStringByFormatting(source, delimiter = '-') {
-            const year = source.getFullYear(); 
-            const month = leftPad(source.getMonth() + 1); 
-            const day = leftPad(source.getDate());
-            return [year, month, day].join(delimiter);
-        }
+    function toStringByFormatting(source, delimiter = '-') {
+        const year = source.getFullYear(); 
+        const month = leftPad(source.getMonth() + 1); 
+        const day = leftPad(source.getDate());
+        return [year, month, day].join(delimiter);
+    }
 
-        function leftPad(value) {
-            if (value >= 10) { return value; } return `0${value}`; 
+    function leftPad(value) {
+        if (value >= 10) { return value; } return `0${value}`; 
+    }
+        
+    function removeComments(i) {
+        if (!confirm('삭제하시겠습니까?')){
+            return;
         }
-        function removeComments(i) {
-            if (!confirm('삭제하시겠습니까?')){
-                return;
-            }
             
-            var commentjson= localStorage.getItem('comments'); // 로컬스토리지에서 모든 코멘트를 가져온다.
-            var comment = comment=JSON.parse(commentjson); // 모든 코멘트를 자바스크립트 객체로 변환한다.
-            var list = comment['cono'+num];  // 모든코멘트 중에 현재 컨텐츠 번호에 해당하는 코멘트를 가져온다.
-            list.splice(i, 1); // 코멘트 리스트에서 해당 코멘트 삭제
-            comment['cono'+num] = list;  // 삭제한 리스트를 다시 바인딩
-            localStorage.setItem('comments', JSON.stringify(comment));  //바인딩된 코멘트를 LOCALSTORAGE에 저장
-            location.href = 'view.html?no='+num;
-  }
+    var commentjson= localStorage.getItem('comments'); // 로컬스토리지에서 모든 코멘트를 가져온다.
+    var comment = comment=JSON.parse(commentjson); // 모든 코멘트를 자바스크립트 객체로 변환한다.
+    var list = comment['cono'+num];  // 모든코멘트 중에 현재 컨텐츠 번호에 해당하는 코멘트를 가져온다.
+    list.splice(i, 1); // 코멘트 리스트에서 해당 코멘트 삭제
+    comment['cono'+num] = list;  // 삭제한 리스트를 다시 바인딩
+    localStorage.setItem('comments', JSON.stringify(comment));  //바인딩된 코멘트를 LOCALSTORAGE에 저장
+    location.href = 'view.html?no='+num;
+    }
 </script>
 </html>
