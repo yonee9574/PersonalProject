@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title></title>
+<style>
+    th,td {
+        border: dotted;
+        font-size: 1rem;
+    }
+    
+    table {
+        border: 1px;
+        border-collapse: collapse;
+        width: 50%;
+        height: 50px;
+        margin: auto;
+        text-align: center;
+    }
+    
+    h1{
+        text-align: center;
+        font-size: 3rem;
+    }
+      
+    textarea{
+        border: 1;
+        width: 80%; 
+        border: 1; 
+        overflow:visible; 
+        text-overflow:ellipsis;
+    }
+
+    input{
+        border: 1;
+    }
+      
+    .btn{
+        border: 1;
+        border-radius: 20%;
+        color: rgb(187, 187, 187);
+        padding: 8px 45px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 15px;
+        margin: auto;
+        cursor: pointer;
+    }
+    #center_button{
+        position: absolute;
+        top: 75%;
+        left: 45%;
+        margin:auto;
+    }
+</style>
+</head>
+<body>
+
+    <h1>수 정</h1>
+    <table>
+        <tr>
+            <th>감사한 점</th>
+            <td><input size = "100%" type="text" id="title" name="title"/></td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td><input size = "100%" type="text" id="writer" name="writer"/></td>
+        </tr>
+        <tr>
+            <th>글내용</th>
+        <td>
+            <textarea style="width:84%; border:1; overflow:visible; text-overflow:ellipsis;" rows=30 type="text" id="content" name="content"></textarea>
+        </td>
+        </tr>
+</table>
+<div id="center_button">
+    <button class = "btn" onclick="save()">수정</button>
+    <button class = "btn" onclick="window.history.back()">취소</button>
+</div>
+</body>
+<script>
+    function save() {
+        if (!confirm('수정하시겠습니까?')) {
+          return;
+        }
+        var contents;
+          try {
+            contents = JSON.parse(localStorage.getItem("contents"));
+          } catch (e) {
+            contents = null;
+          }
+    
+        if (!contents) {
+          contents = [];
+        }
+        var title = document.getElementById('title').value;
+        var writer = document.getElementById('writer').value;
+        var content = document.getElementById('content').value;
+        contents[getParameterByName('no')-1]={no:contents.length
+          , title:title
+          , writer:writer
+          , content:content
+          , write_date:new Date()};
+        localStorage.setItem("contents", JSON.stringify(contents));
+        alert('수정되었습니다.');
+        location.href = 'main.html';
+      }
+    
+      var contents = JSON.parse(localStorage.getItem("contents"));
+      getContents();
+      function getContents() {
+    
+        if (!contents) {
+          contents = [];
+        }
+        
+        var content = contents[getParameterByName('no')-1];
+        document.getElementById('title').value = content.title;
+        document.getElementById('writer').value = content.writer;
+        document.getElementById('content').value = content.content;
+      }
+    
+      function removeContent() {
+        if (confirm('삭제하시겠습니까?')){
+            location.href = 'list.html';
+          } else {
+            return;
+          }
+        console.log(contents);
+        contents.splice(getParameterByName('no')-1, getParameterByName('no'));
+        localStorage.setItem("contents", JSON.stringify(contents));
+      }
+        function modify() {
+          if (confirm('수정하시겠습니까?')){
+            location.href = 'form.html?no='+getParameterByName('no');
+            
+          } else {
+            return;
+          }
+        }
+        function getParameterByName(name) { 
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"); 
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search); 
+      return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+</script>
+</html>
